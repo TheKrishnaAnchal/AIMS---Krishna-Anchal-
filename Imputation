@@ -1,0 +1,36 @@
+import pandas as pd 
+import numpy as np
+print(" Handling Missing Data in a DataFrame via Imputation ")
+data = {
+    'Age': [25, np.nan, 30, 22, np.nan, 28],
+    'Salary': [50000, 60000, np.nan, 52000, 58000, np.nan],
+    'Department': ['HR', 'Finance', np.nan, 'IT', 'Finance', 'HR']
+}
+
+df = pd.DataFrame(data)
+print(df)
+print(df.isnull().sum())
+
+def fill_with_mean(value, mean_value):
+    if pd.isnull(value):
+        return mean_value
+    else:
+        return value
+
+age_mean = df['Age'].mean()
+df['Age_filled_mean'] = df['Age'].apply(fill_with_mean, mean_value=age_mean)
+
+salary_mean = df['Salary'].mean()
+df['Salary_filled_mean'] = df['Salary'].apply(fill_with_mean, mean_value=salary_mean)
+
+department_mode = df['Department'].mode()[0]
+def fill_with_mode(value, mode_value):
+    if pd.isnull(value):
+        return mode_value
+    else:
+        return value    
+    
+df['Department_filled_mode'] = df['Department'].apply(fill_with_mode, mode_value=department_mode)
+
+print(df)
+
